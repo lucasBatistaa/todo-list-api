@@ -9,3 +9,63 @@ datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  publicId  Int
+  username  String   @unique
+  email     String   @unique
+  password  String
+  photo     String
+  createdAt DateTime @default(now())
+
+  session Session[]
+
+  @@map("users")
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("sessions")
+}
+
+model List {
+  id        Int      @id @default(autoincrement())
+  name      String
+  icon      String
+  createdAt DateTime @default(now())
+
+  label Label[]
+  task  Task[]
+
+  @@map("lists")
+}
+
+model Task {
+  id             Int       @id @default(autoincrement())
+  listId         Int
+  name           String
+  isChecked      Boolean
+  priority       Int
+  dateToComplete DateTime?
+
+  list List @relation(fields: [listId], references: [id])
+
+  @@map("tasks")
+}
+
+model Label {
+  id     Int    @id @default(autoincrement())
+  listId Int
+  name   String
+
+  list List @relation(fields: [listId], references: [id])
+
+  @@map("labels")
+}
