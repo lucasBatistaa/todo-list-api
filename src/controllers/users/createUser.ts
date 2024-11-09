@@ -1,47 +1,40 @@
-import { Request, Response } from "express";
-import { createUserValidate } from "../../utils/userSchema";
+import { NextFunction, Request, Response } from "express";
+import { ClientError } from "../../errors/clientError";
 import { userModel } from "../../models/userModel";
+import { createUserValidate } from "../../utils/userSchema";
 
-import { v4 as uuid }  from 'uuid'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
+import { v4 as uuid } from 'uuid';
+import { create } from "domain";
 
-export default async function createUser(req: Request, res: Response) {
+export default async function createUser(req: Request, res: Response, next: NextFunction) {
     try {
         const user = req.body
         const userValidated = createUserValidate(user)
 
         if (userValidated.error) {
-            return res.status(400).json({
-                message: 'Erro na validação de dados, verifique todos os campos!',
-                error: userValidated.error.flatten().fieldErrors
-            })
+            return next(userValidated.error)
         }
 
         const usernameExists = await userModel.usernameExists(userValidated.data.username)
 
         if (usernameExists) {
-            res.status(400).json({
-                message: 'Erro! Já existe um usuário com este username!',
-            })
+            return next(new ClientError('Nome de usuário já existe!')) 
         }
 
         const emailExists = await userModel.emailExists(userValidated.data.email)
 
         if (emailExists) {
-            res.status(400).json({
-                message: 'Erro! Já existe um usuário com este e-mail!',
-            })
+            return next(new ClientError('Já existe um usuário com este e-mail!'))
         }
 
         userValidated.data.publicId = uuid()
         userValidated.data.password = bcrypt.hashSync(userValidated.data.password, 10)
 
-        const createdUser  = await userModel.create(userValidated.data)
+        const createdUser = await userModel.create(userValidated.data)
 
         if (!createdUser) {
-            res.status(400).json({
-                message: 'Erro na criação do usuário!',
-            })
+            return next(new ClientError('Erro na criação do usuário'))
         }
 
         return res.status(200).json({
@@ -50,8 +43,6 @@ export default async function createUser(req: Request, res: Response) {
         })
 
     } catch (error) {
-        return res.status(500).json({
-            message: "Erro no servidor"
-        })
+        next(error)
     }
-};
+}
