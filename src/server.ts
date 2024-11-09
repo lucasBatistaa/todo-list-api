@@ -1,8 +1,9 @@
 import express from 'express' 
-import { env } from './utils/envSchema'
+import { env } from './utils/schemas/envSchema'
 
 import listRouter from './routers/listRouter'
 import userRouter from './routers/userRouter'
+import authRouter from './routers/authRouter'
 import errorHandler from './middleware/errorHandler'
 
 const app = express()
@@ -14,6 +15,7 @@ app.use(express.json())
 
 app.use('/list', listRouter)
 app.use('/user', userRouter)
+app.use('/auth', authRouter)
 
 app.use(errorHandler)
 

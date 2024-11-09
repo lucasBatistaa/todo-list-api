@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createListValidate } from "../../utils/listSchema";
+import { createListValidate } from "../../utils/schemas/listSchema";
 
 export default async function createList(req: Request, res: Response) {
     try {

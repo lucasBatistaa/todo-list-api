@@ -1,4 +1,3 @@
-import { create } from 'domain'
 import z from 'zod'
 
 export const listSchema = z.object({
