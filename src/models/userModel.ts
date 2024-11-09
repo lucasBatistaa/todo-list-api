@@ -16,5 +16,31 @@ export const userModel = {
         })  
 
         return user
+    },
+
+    usernameExists: async (username: string) => {
+        const user = prisma.user.findUnique({
+            where: {
+                username
+            }, 
+            select: {
+                id: true,
+            }
+        })
+
+        return user
+    },
+
+    emailExists: async (email: string) => {
+        const user = prisma.user.findUnique({
+            where: {
+                email
+            }, 
+            select: {
+                id: true,
+            }
+        })
+
+        return user
     }
 }
