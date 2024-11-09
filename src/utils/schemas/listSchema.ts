@@ -9,7 +9,6 @@ export const listSchema = z.object({
 
 export const createListSchema = listSchema.partial({
     id: true,
-    // icon: true,
 })
 
 export const createListValidate = (list: CreateListType) => {

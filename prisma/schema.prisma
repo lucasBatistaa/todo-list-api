@@ -37,11 +37,12 @@ model Session {
 }
 
 model List {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  name      String
-  icon      String
-  createdAt DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  name       String
+  icon       String
+  isFavorite Boolean  @default(false)
+  createdAt  DateTime @default(now())
 
   user        User          @relation(fields: [userId], references: [id])
   task        Task[]
