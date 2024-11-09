@@ -43,11 +43,22 @@ model List {
   icon      String
   createdAt DateTime @default(now())
 
-  user  User    @relation(fields: [userId], references: [id])
-  label Label[]
-  task  Task[]
+  user        User          @relation(fields: [userId], references: [id])
+  task        Task[]
+  labelOnList LabelOnList[]
 
   @@map("lists")
+}
+
+model LabelOnList {
+  id      Int @id @default(autoincrement())
+  listId  Int
+  labelId Int
+
+  list  List  @relation(fields: [listId], references: [id])
+  label Label @relation(fields: [labelId], references: [id])
+
+  @@map("label_on_list")
 }
 
 model Task {
@@ -64,11 +75,10 @@ model Task {
 }
 
 model Label {
-  id     Int    @id @default(autoincrement())
-  listId Int
-  name   String
+  id   Int    @id @default(autoincrement())
+  name String
 
-  list List @relation(fields: [listId], references: [id])
+  labelOnList LabelOnList[]
 
   @@map("labels")
 }
