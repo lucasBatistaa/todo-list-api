@@ -7,13 +7,14 @@ import editNameList from '../controllers/lists/editNameList'
 import editLabel from '../controllers/lists/editLabel'
 import editFavorite from '../controllers/lists/editFavorite'
 import deleteList from '../controllers/lists/deleteList'
+import authentication from '../middleware/authentication'
 
 const router = express.Router()
 
 router.get('/all', allLists)
 router.get('/favorites', allFavorites)
 
-router.post('/create', createList)
+router.post('/create', authentication, createList)
 
 router.patch('/:id/name', editNameList)
 router.patch('/:id/labels', editLabel)

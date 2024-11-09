@@ -46,7 +46,7 @@ export default async function login(
 
     await sessionModel.create(user.id, token)
 
-    return res.status(200).json({
+    res.status(200).json({
       message: "Login realizado!",
       token,
     });
