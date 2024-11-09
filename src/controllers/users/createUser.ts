@@ -45,7 +45,7 @@ export default async function createUser(
       return next(new ClientError("Erro na criação do usuário"));
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       message: "Usuário criado!",
       user: createdUser,
     });

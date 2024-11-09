@@ -12,7 +12,6 @@ app.get('/', (req, res) => { res.status(200).json({ message: 'Welcome to API'}) 
 
 app.use(express.json())
 
-
 app.use('/list', listRouter)
 app.use('/user', userRouter)
 app.use('/auth', authRouter)
