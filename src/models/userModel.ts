@@ -58,4 +58,17 @@ export const userModel = {
 
         return user
     },
+
+    getById: async (id: number) => {
+        const user = await prisma.user.findUnique({
+            where: {
+                id
+            }, 
+            select: {
+                id: true,
+            }
+        })
+
+        return user
+    }
 }

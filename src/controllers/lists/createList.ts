@@ -1,31 +1,29 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { createListValidate } from "../../utils/schemas/listSchema";
+import { listModel } from "../../models/listModel";
+import { ClientError } from "../../errors/clientError";
 
-export default async function createList(req: Request, res: Response) {
+export default async function createList(req: Request, res: Response, next: NextFunction) {
     try {
         const data = req.body
-
-        // Validar dados (req.body)
         const validatedData = createListValidate(data)
 
-        if (validatedData.error) {
-            return res.status(400).json({
-                message: 'Erro na criação da lista, verifique todos os dados!',
-                error: validatedData.error.flatten().fieldErrors,
-            })
+        if (!validatedData.success) {
+            return next(validatedData.error)
         } 
 
-        // Verificar se usuário existe
-        // const userExists = 
+        const list = await listModel.create(validatedData.data)
 
-        // Verificar se labels existem
+        if (!list) {
+            return next(new ClientError('Erro na criação da lista!'))
+        }
 
-        return res.status(200).json({
+        res.status(200).json({
             message: 'Created list!',
             list: validatedData.data
         })
 
     } catch (error) {
-        console.error('error: ', error)        
+        next(error)       
     }
 };

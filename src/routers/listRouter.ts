@@ -14,7 +14,7 @@ const router = express.Router()
 router.get('/all', allLists)
 router.get('/favorites', allFavorites)
 
-router.post('/create', authentication, createList)
+router.post('/create', createList)
 
 router.patch('/:id/name', editNameList)
 router.patch('/:id/labels', editLabel)
