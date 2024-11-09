@@ -12,11 +12,11 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  publicId  Int
+  publicId  Int?
   username  String   @unique
   email     String   @unique
   password  String
-  photo     String
+  photo     String?
   createdAt DateTime @default(now())
 
   session Session[]
