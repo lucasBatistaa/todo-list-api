@@ -1,5 +1,5 @@
 import { prisma } from "../utils/prismaClient"
-import { CreateListType } from "../utils/schemas/listSchema"
+import { CreateListType, EditNameListType } from "../utils/schemas/listSchema"
 
 export const listModel = {
     create: async (dataList: CreateListType) => {
@@ -47,6 +47,23 @@ export const listModel = {
             }, 
             select: {
                 id: true,
+            }
+        })
+
+        return list
+    },
+
+    updateName: async (listData: EditNameListType) => {
+        const list = await prisma.list.update({
+            data: {
+                name: listData.name,
+            }, 
+            where: {
+                id: listData.id,
+            },
+            select: {
+                id: true,
+                name: true,
             }
         })
 

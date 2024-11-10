@@ -16,3 +16,14 @@ export const createListValidate = (list: CreateListType) => {
 }
 
 export type CreateListType = z.infer<typeof createListSchema>
+
+export const editNameListSchema = listSchema.partial({
+    userId: true,
+    icon: true,
+})
+
+export const editNameListValidate = (list: EditNameListType) => {
+    return editNameListSchema.safeParse(list)
+}
+
+export type EditNameListType = z.infer<typeof editNameListSchema>
