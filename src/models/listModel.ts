@@ -44,6 +44,19 @@ export const listModel = {
         return lists
     },
 
+    getLabels: async (listId: number) => {
+        const labelsOnList = await prisma.labelOnList.findMany({
+            where: {
+                listId
+            },
+            select: {
+                labelId: true,
+            }
+        })
+
+        return labelsOnList
+    },
+
     updateFavorite: async (id: number) => {
         const isFavorited = await prisma.list.findUnique({
             where: {
