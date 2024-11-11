@@ -4,7 +4,7 @@ import { CreateListType, EditNameListType } from "../utils/schemas/listSchema"
 export const listModel = {
     create: async (dataList: CreateListType) => {
         const list = await prisma.list.create({
-            data: dataList, 
+            data: dataList,
             select: {
                 id: true,
             }
@@ -18,19 +18,35 @@ export const listModel = {
             where: {
                 userId,
                 isFavorite: true
-            }, select: {
+            }, 
+            select: {
                 id: true,
                 icon: true,
-                name: true,    
+                name: true,
             }
         })
 
         return favorites
     },
 
+    getAll: async (userId: number) => {
+        const lists = await prisma.list.findMany({
+            where: {
+                userId,
+            }, 
+            select: {
+                id: true,
+                icon: true,
+                name: true,
+            }
+        })
+
+        return lists
+    },
+
     updateFavorite: async (id: number) => {
         const isFavorited = await prisma.list.findUnique({
-            where: { 
+            where: {
                 id,
             },
             select: {
@@ -40,11 +56,11 @@ export const listModel = {
 
         const list = await prisma.list.update({
             data: {
-                isFavorite: !isFavorited?.isFavorite 
+                isFavorite: !isFavorited?.isFavorite
             },
             where: {
                 id,
-            }, 
+            },
             select: {
                 id: true,
             }
@@ -57,13 +73,42 @@ export const listModel = {
         const list = await prisma.list.update({
             data: {
                 name: listData.name,
-            }, 
+            },
             where: {
                 id: listData.id,
             },
             select: {
                 id: true,
                 name: true,
+            }
+        })
+
+        return list
+    },
+
+    updateIcon: async (listData) => {
+        const list = await prisma.list.update({
+            data: {
+                icon: listData.icon,
+            },
+            where: {    
+                id: listData.id,
+            },
+            select: {
+                id: true,
+            }
+        })
+
+        return list
+    },
+
+    delete: async (id: number) => {
+        const list = await prisma.list.delete({
+            where: {
+                id
+            }, 
+            select: {
+                id: true
             }
         })
 
