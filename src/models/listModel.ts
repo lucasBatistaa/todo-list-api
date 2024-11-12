@@ -126,5 +126,17 @@ export const listModel = {
         })
 
         return list
+    },
+
+    deleteLabels: async (listId: number, labelsToRemove: { labelId: number }[]) => {
+        const labelsId = labelsToRemove.map(label => label.labelId)
+        await prisma.labelOnList.deleteMany({
+            where: {
+                listId,
+                labelId: {
+                    in: labelsId
+                }
+            }
+        })
     }
 }

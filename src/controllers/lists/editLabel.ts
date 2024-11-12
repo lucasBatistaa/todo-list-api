@@ -13,13 +13,12 @@ export default async function editLabel(req: Request, res: Response, next: NextF
 
         const currentLabels = await listModel.getLabels(editLabels.id)
 
-        // const labelsToRemove = currentLabels.filter(label => label !=)
+        const labelsToRemove = currentLabels.filter(label => label.labelId != editLabels.labels)
 
-
-        console.log(editLabels)
+        await listModel.deleteLabels(editLabels.id, labelsToRemove)
 
         res.status(200).json({
-            message: 'Etiquetas da lista alteradas!',
+            message: 'Etiquetas da lista atualizadas!',
         })
     } catch (error) {
         next(error)

@@ -5,6 +5,7 @@ export const listSchema = z.object({
     userId: z.number(),
     name: z.string().min(3).max(256),
     icon: z.string(),
+    // labels: z.number().
 })
 
 export const createListSchema = listSchema.partial({
@@ -27,3 +28,9 @@ export const editNameListValidate = (list: EditNameListType) => {
 }
 
 export type EditNameListType = z.infer<typeof editNameListSchema>
+
+// export const editLabelListSchema = listSchema.partial({
+//     userId: true,
+//     name: true,
+//     icon: true,
+// })
