@@ -19,7 +19,7 @@ export default async function createList(req: Request, res: Response, next: Next
         }
 
         res.status(200).json({
-            message: 'Created list!',
+            message: 'Lista criada!',
             list: validatedData.data
         })
 

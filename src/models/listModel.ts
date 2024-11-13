@@ -1,5 +1,5 @@
 import { prisma } from "../utils/prismaClient"
-import { CreateListType, EditNameListType } from "../utils/schemas/listSchema"
+import { CreateListType, EditIconListType, EditNameListType } from "../utils/schemas/listSchema"
 
 export const listModel = {
     create: async (dataList: CreateListType) => {
@@ -54,7 +54,9 @@ export const listModel = {
             }
         })
 
-        return labelsOnList
+        const result = labelsOnList.map(label => label.labelId)
+
+        return result
     },
 
     updateFavorite: async (id: number) => {
@@ -99,7 +101,7 @@ export const listModel = {
         return list
     },
 
-    updateIcon: async (listData) => {
+    updateIcon: async (listData: EditIconListType) => {
         const list = await prisma.list.update({
             data: {
                 icon: listData.icon,
@@ -128,15 +130,21 @@ export const listModel = {
         return list
     },
 
-    deleteLabels: async (listId: number, labelsToRemove: { labelId: number }[]) => {
-        const labelsId = labelsToRemove.map(label => label.labelId)
+    updateLabels: async (listId: number, labelsToRemove: number[], labelsToAdd: number[]) => {
         await prisma.labelOnList.deleteMany({
             where: {
                 listId,
                 labelId: {
-                    in: labelsId
+                    in: labelsToRemove
                 }
             }
+        })
+
+        await prisma.labelOnList.createMany({
+            data: labelsToAdd.map((labelId) =>({
+				listId,
+				labelId
+			}))
         })
     }
 }

@@ -13,11 +13,11 @@ export default async function editFavorite(req: Request, res: Response, next: Ne
         const editFavorite = await listModel.updateFavorite(Number(id))
         
         if (!editFavorite) {
-            return next(new ClientError('Não foi possível atualizar a lista'))
+            return next(new ClientError('Erro! Não foi possível atualizar a lista!'))
         }
 
         res.status(200).json({
-            message: 'Lista atualizada',
+            message: 'Lista atualizada!',
         })
 
     } catch (error) {

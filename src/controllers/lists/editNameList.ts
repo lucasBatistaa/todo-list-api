@@ -26,7 +26,7 @@ export default async function editNameList(
     const updatedList = await listModel.updateName(validatedList.data);
 
     if (!updatedList) {
-      return next(new ClientError("Não foi possível atualizar a lista!"));
+      return next(new ClientError("Erro! Não foi possível atualizar a lista!"));
     }
 
     res.status(200).json({
