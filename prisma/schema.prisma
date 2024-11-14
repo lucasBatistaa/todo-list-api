@@ -21,6 +21,7 @@ model User {
 
   session Session[]
   list    List[]
+  label   Label[]
 
   @@map("users")
 }
@@ -52,9 +53,10 @@ model List {
 }
 
 model LabelOnList {
-  id      Int @id @default(autoincrement())
-  listId  Int
-  labelId Int
+  id        Int      @id @default(autoincrement())
+  listId    Int
+  labelId   Int
+  createdAt DateTime @default(now())
 
   list  List  @relation(fields: [listId], references: [id])
   label Label @relation(fields: [labelId], references: [id])
@@ -69,6 +71,7 @@ model Task {
   isChecked      Boolean
   priority       Int
   dateToComplete DateTime?
+  createdAt      DateTime  @default(now())
 
   list List @relation(fields: [listId], references: [id])
 
@@ -76,9 +79,12 @@ model Task {
 }
 
 model Label {
-  id   Int    @id @default(autoincrement())
-  name String
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  createdAt DateTime @default(now())
 
+  user        User          @relation(fields: [userId], references: [id])
   labelOnList LabelOnList[]
 
   @@map("labels")
