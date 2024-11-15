@@ -16,7 +16,37 @@ export const sessionModel = {
                 token
             }, 
             select: {
-                userId: true
+                userId: true,
+            }
+        })
+
+        return session
+    },
+
+    getUserByToken: async (token: string) => {
+        const session = await prisma.session.findUnique({
+            where: {
+                token
+            }, 
+            select: {
+                id: true,
+                user: true
+            }
+        })
+
+        return session
+    },
+
+    updateToken: async (id: number, token: string) => {
+        const session = await prisma.session.update({
+            data: {
+                token,
+            },
+            where: {
+                id,
+            },
+            select: {
+                id: true,
             }
         })
 

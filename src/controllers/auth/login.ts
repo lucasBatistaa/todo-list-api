@@ -41,7 +41,7 @@ export default async function login(
     const token = jwt.sign(
       { publicId: user.publicId, username: user.username },
       env.SECRET_KEY,
-      { expiresIn: "60min" }
+      { expiresIn: "1min" }
     );
 
     await sessionModel.create(user.id, token)
