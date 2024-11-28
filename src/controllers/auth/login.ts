@@ -48,7 +48,13 @@ export default async function login(
 
     res.status(200).json({
       message: "Login realizado!",
-      token,
+      user: {
+        id: user.id,
+        name: user.username,
+        photo: null,
+        email: user.email,
+        token,
+      },
     });
   } catch (error) {
     next(error);

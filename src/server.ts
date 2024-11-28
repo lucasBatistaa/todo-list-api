@@ -1,4 +1,6 @@
 import express from 'express' 
+import cors from 'cors'
+
 import { env } from './utils/schemas/envSchema'
 
 import authRouter from './routers/authRouter'
@@ -10,9 +12,16 @@ import errorHandler from './middleware/errorHandler'
 
 const app = express()
 
-app.get('/', (req, res) => { res.status(200).json({ message: 'Welcome to API'}) })
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}
 
+app.use(cors(corsOptions))
 app.use(express.json())
+
+app.get('/', (req, res) => { res.status(200).json({ message: 'Welcome to API'}) })
 
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
