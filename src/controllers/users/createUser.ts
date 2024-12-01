@@ -3,6 +3,11 @@ import { ClientError } from "../../errors/clientError";
 import { userModel } from "../../models/userModel";
 import { createUserValidate } from "../../utils/schemas/userSchema";
 
+import jwt from "jsonwebtoken";
+
+import { env } from "../../utils/schemas/envSchema";
+import { sessionModel } from "../../models/sessionModel";
+
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 
@@ -45,9 +50,23 @@ export default async function createUser(
       return next(new ClientError("Erro na criação do usuário"));
     }
 
+    const token = jwt.sign(
+      { publicId: createdUser.publicId, username: createdUser.username },
+      env.SECRET_KEY,
+      { expiresIn: "1min" }
+    );
+
+    await sessionModel.create(createdUser.id, token);
+
     res.status(200).json({
       message: "Usuário criado!",
-      user: createdUser,
+      user: {
+        id: user.id,
+        name: user.username,
+        photo: null,
+        email: user.email,
+        token,
+      },
     });
   } catch (error) {
     next(error);

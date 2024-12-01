@@ -12,15 +12,15 @@ export default async function createList(req: Request, res: Response, next: Next
             return next(validatedData.error)
         } 
 
-        const list = await listModel.create(validatedData.data)
+        const listId = await listModel.create(validatedData.data)
 
-        if (!list) {
+        if (!listId) {
             return next(new ClientError('Erro na criação da lista!'))
         }
 
         res.status(200).json({
             message: 'Lista criada!',
-            list: validatedData.data
+            listId
         })
 
     } catch (error) {

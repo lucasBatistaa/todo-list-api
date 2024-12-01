@@ -10,6 +10,7 @@ export const userModel = {
                 username: true,
                 email: true,
                 photo: true,
+                publicId: true
             }
         })  
 

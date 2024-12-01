@@ -4,7 +4,7 @@ import { labelModel } from "../../models/labelModel";
 
 export default async function allLabels(req: Request, res: Response, next: NextFunction) {
     try {
-        const { userId } = req.params  
+        const { userId } = req.body  
 
         if (!userId) {
             return next(new ClientError('ID do usuário não informado!'))

@@ -10,11 +10,11 @@ export default async function allFavorites(req: Request, res: Response, next: Ne
             return next(new ClientError('ID do usuário não informado!'))
         }
     
-        const favorites = await listModel.getFavorites(userId)
+        const favoritesLists = await listModel.getFavorites(userId)
 
         res.status(200).json({
             message: 'Listas favoritadas!',
-            lists: favorites
+            lists: favoritesLists
         })
     } catch (error) {
         next(error)
