@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { taskModel } from "../../models/taskModel";
 import { ClientError } from "../../errors/clientError";
-import { editNameTaskValidate } from "../../utils/schemas/taskSchema";
 
 export default async function editIsCheckedTask(req: Request, res: Response, next: NextFunction) {
     try {

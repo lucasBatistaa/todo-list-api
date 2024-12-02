@@ -13,6 +13,32 @@ export const listModel = {
         return list
     },
 
+    getList: async (id: number) => {
+        const list = await prisma.list.findUnique({
+            where: {
+                id
+            }, 
+            select: {
+                id: true,
+                icon: true,
+                isFavorite: true,
+                name: true,
+                labelOnList: true,
+                task: {
+                    select: {
+                        id: true,
+                        dateToComplete: true,
+                        isChecked: true,
+                        name: true,
+                        priority: true,
+                    }
+                },
+            }
+        })
+
+        return list
+    },
+
     getFavorites: async (userId: number) => {
         const favorites = await prisma.list.findMany({
             where: {

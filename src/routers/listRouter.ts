@@ -2,6 +2,7 @@ import express from 'express'
 
 import authentication from '../middleware/authentication'
 
+import getList from '../controllers/lists/getList'
 import createList from '../controllers/lists/createList'
 import allLists from '../controllers/lists/allLists'
 import allFavorites from '../controllers/lists/allFavorites'
@@ -13,13 +14,15 @@ import editIconList from '../controllers/lists/editIconList'
 
 const router = express.Router()
 
+router.get('/:id', getList)
+
 router.post('/favorites', allFavorites)
 router.post('/all', allLists)
 router.post('/create', createList)
 
 router.patch('/:id/name', editNameList)
 router.patch('/:id/labels', editLabel)
-router.patch('/:id/favorites', editFavorite)
+router.patch('/:id/favorite', editFavorite)
 router.patch('/:id/icon', editIconList)
 
 router.delete('/:id', deleteList)
