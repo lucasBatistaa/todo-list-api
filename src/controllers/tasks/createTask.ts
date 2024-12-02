@@ -5,7 +5,14 @@ import { ClientError } from "../../errors/clientError";
 
 export default async function createTask(req: Request, res: Response, next: NextFunction) {
     try {
-        const task = req.body
+        const {listId, name, dateToComplete, priority} = req.body
+
+        const task = {
+            listId: Number(listId),
+            name: String(name),
+            dateToComplete: dateToComplete ? new Date(dateToComplete) : null,
+            priority: priority ? Number(priority) : null
+        }
 
         const validatedTask = createTaskValidate(task)
 

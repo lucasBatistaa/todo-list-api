@@ -69,7 +69,7 @@ model Task {
   listId         Int
   name           String
   isChecked      Boolean   @default(false)
-  priority       Int
+  priority       Int?
   dateToComplete DateTime?
   createdAt      DateTime  @default(now())
 

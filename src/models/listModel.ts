@@ -23,7 +23,16 @@ export const listModel = {
                 icon: true,
                 isFavorite: true,
                 name: true,
-                labelOnList: true,
+                labelOnList: {
+                    select: {
+                        label: {
+                            select: {
+                                id: true,
+                                name: true,
+                            }
+                        }
+                    }
+                },
                 task: {
                     select: {
                         id: true,
