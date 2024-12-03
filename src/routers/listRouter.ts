@@ -14,7 +14,7 @@ import editIconList from '../controllers/lists/editIconList'
 
 const router = express.Router()
 
-router.get('/:id', getList)
+router.get('/:id', authentication, getList)
 
 router.post('/favorites', allFavorites)
 router.post('/all', allLists)

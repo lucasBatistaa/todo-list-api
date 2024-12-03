@@ -24,13 +24,14 @@ export default async function editLabel(
 
     const currentLabels = await listModel.getLabels(validatedList.data.id);
 
-    const labelsToRemove = currentLabels.filter(
-      (label) => !validatedList.data.labels.includes(label)
-    );
+    const labelsToRemove = currentLabels
+      .filter(label => !validatedList.data.labels
+      .some(validatedLabel => validatedLabel.id === label))
 
-    const labelsToAdd = validatedList.data.labels.filter(
-      (label) => !currentLabels.includes(label)
-    );
+    const labelsToAdd = validatedList.data.labels
+      .filter(validatedLabel => !currentLabels
+      .some(label => label === validatedLabel.id))
+      .map(validatedLabel => validatedLabel.id);
 
     await listModel.updateLabels(editLabels.id, labelsToRemove, labelsToAdd);
 

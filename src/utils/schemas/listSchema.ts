@@ -5,7 +5,10 @@ export const listSchema = z.object({
     userId: z.number(),
     name: z.string().min(3).max(256),
     icon: z.string(),
-    labels: z.number().array()
+    labels: z.array(z.object({
+        id: z.number(),
+        name: z.string()
+    }))
 })
 
 // CREATE LIST

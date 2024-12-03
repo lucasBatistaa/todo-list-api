@@ -8,7 +8,7 @@ export default async function logout(
   next: NextFunction
 ) {
   try {
-    const token = req.headers["authorization"]?.split(" ")[1];
+    const token = req.cookies.authToken
 
     if (!token) {
       return next(new ClientError("Token não encontrado"));

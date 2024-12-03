@@ -11,7 +11,9 @@ export default async function authentication(
   next: NextFunction
 ) {
   try {
-    const token = req.headers["authorization"]?.split(" ")[1];
+    const token = req.cookies.authToken
+
+    console.log(token)
 
     if (!token) {
       return next(new ClientError("Token não identificado!"));
@@ -22,13 +24,16 @@ export default async function authentication(
     const session = await sessionModel.getByToken(token);
 
     if (!session) {
-      return next(new ClientError("Sessão não encontrada!"));
+      res.status(200).json({
+        user: null
+      })
+      // return next(new ClientError("Sessão não encontrada!"));
     }
 
     next();
   } catch (error) {
     if (error instanceof TokenExpiredError) {
-      const token = req.headers["authorization"]?.split(" ")[1];
+      const token = req.cookies.authToken
 
       if (!token) {
         return next(new ClientError("Token não identificado!"));
@@ -55,19 +60,21 @@ export default async function authentication(
           return next(new ClientError("Erro! Não foi possível atualizar o token!"));
         }
 
-        res.cookie("authToken", newToken, {
+        res.cookie("authToken", token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
-          maxAge: 1 * 60 * 1000,
+          secure: false,
+          sameSite: "lax",
+          maxAge: 5 * 60 * 1000,
         });
-
-        req.headers["authorization"] = `Bearer ${newToken}`;
 
         return authentication(req, res, next);
       }
     } else {
-      return next(new ClientError("Sessão não encontrada!"));
+      // return next(new ClientError("Sessão não encontrada!"));
+
+      res.status(200).json({
+        user: null
+      })
     }
 
     return next(new ClientError("Token inválido ou expirado!"));

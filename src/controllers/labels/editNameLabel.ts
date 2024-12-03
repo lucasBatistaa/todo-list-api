@@ -5,8 +5,8 @@ import { ClientError } from "../../errors/clientError";
 
 export default async function editNameLabel(req: Request, res: Response, next: NextFunction) {
     try {
-        const { name } = req.body
         const { id } = req.params
+        const { name } = req.body
 
         const label = { 
             id: Number(id),

@@ -7,7 +7,6 @@ import editNameLabel from '../controllers/labels/editNameLabel'
 
 const router = express.Router()
 
-
 router.post('/all', allLabels)
 router.post('/create', createLabel)
 

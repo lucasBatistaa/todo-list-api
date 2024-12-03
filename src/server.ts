@@ -1,5 +1,6 @@
 import express from 'express' 
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 import { env } from './utils/schemas/envSchema'
 
@@ -15,10 +16,12 @@ const app = express()
 const corsOptions = {
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Credentials'],
+    credentials: true,
 }
 
 app.use(cors(corsOptions))
+app.use(cookieParser())
 app.use(express.json())
 
 app.get('/', (req, res) => { res.status(200).json({ message: 'Welcome to API'}) })

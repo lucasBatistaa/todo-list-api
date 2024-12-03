@@ -61,10 +61,10 @@ export default async function createUser(
     res.status(200).json({
       message: "Usuário criado!",
       user: {
-        id: user.id,
-        name: user.username,
-        photo: null,
-        email: user.email,
+        id: createdUser.id,
+        name: createdUser.username,
+        photo: createdUser.photo,
+        email: createdUser.email,
         token,
       },
     });
