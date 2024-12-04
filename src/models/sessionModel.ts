@@ -23,6 +23,19 @@ export const sessionModel = {
         return session
     },
 
+    getByUserId: async (userId: number) => {
+        const session = await prisma.session.findFirst({
+            where: {
+                userId,
+            },
+            select: {
+                id: true
+            }
+        })
+
+        return session
+    },
+
     getUserByToken: async (token: string) => {
         const session = await prisma.session.findUnique({
             where: {

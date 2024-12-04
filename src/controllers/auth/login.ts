@@ -44,12 +44,18 @@ export default async function login(
       { expiresIn: "1min" }
     );
 
-    await sessionModel.create(user.id, token)
+    const isExistsSession = await sessionModel.getByUserId(user.id)
+
+    if (isExistsSession) {
+      await sessionModel.updateToken(isExistsSession.id, token)
+    } else {
+      await sessionModel.create(user.id, token)
+    }
 
     res.cookie("authToken", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: false,
+      sameSite: "lax",
       maxAge: 5 * 60 * 1000,
     });
 

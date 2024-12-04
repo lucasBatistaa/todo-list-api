@@ -16,6 +16,12 @@ export default async function logout(
 
     await sessionModel.deleteByToken(token);
 
+    res.clearCookie("authToken", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+
     res.json("Deslogado com sucesso!");
   } catch (error) {
     next(error);

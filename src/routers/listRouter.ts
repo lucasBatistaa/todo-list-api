@@ -16,15 +16,15 @@ const router = express.Router()
 
 router.get('/:id', authentication, getList)
 
-router.post('/favorites', allFavorites)
-router.post('/all', allLists)
-router.post('/create', createList)
+router.post('/favorites', authentication, allFavorites)
+router.post('/all', authentication, allLists)
+router.post('/create', authentication, createList)
 
-router.patch('/:id/name', editNameList)
-router.patch('/:id/labels', editLabel)
-router.patch('/:id/favorite', editFavorite)
-router.patch('/:id/icon', editIconList)
+router.patch('/:id/name', authentication, editNameList)
+router.patch('/:id/labels', authentication, editLabel)
+router.patch('/:id/favorite', authentication, editFavorite)
+router.patch('/:id/icon', authentication, editIconList)
 
-router.delete('/:id', deleteList)
+router.delete('/:id', authentication, deleteList)
 
 export default router   

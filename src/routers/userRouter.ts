@@ -8,6 +8,6 @@ import createUser from '../controllers/users/createUser'
 const router = express.Router()
 
 router.post('/create', createUser)
-router.post('/logged', loggedUser)
+router.post('/logged', authentication, loggedUser)
 
 export default router

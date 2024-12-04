@@ -11,10 +11,11 @@ export default async function loggedUser(
   try {
     const token = req.cookies.authToken
 
-    console.log('TOKEN: ', token)
-
     if (!token) {
-      return next(new ClientError("Token não encontrado"));
+      res.status(200).json({
+        user: null
+      })
+      // return next(new ClientError("Token não encontrado"));
     }
 
     const session = await sessionModel.getUserByToken(token);

@@ -8,16 +8,18 @@ import editIsCheckedTask from '../controllers/tasks/editIsCheckedTask'
 import editPriorityTask from '../controllers/tasks/editPriorityTask'
 import deleteTask from '../controllers/tasks/deleteTask'
 
+import authentication from '../middleware/authentication'
+
 const router = express.Router()
 
-router.get('/:listId/all', allTasks)
+router.get('/:listId/all', authentication, allTasks)
 
-router.post('/create', createTask)
+router.post('/create', authentication, createTask)
 
-router.patch('/:id/name', editNameTask)
-router.patch('/:id/date', editDateTask)
-router.patch('/:id/isChecked', editIsCheckedTask)
-router.patch('/:id/priority', editPriorityTask)
+router.patch('/:id/name', authentication, editNameTask)
+router.patch('/:id/date', authentication, editDateTask)
+router.patch('/:id/isChecked', authentication, editIsCheckedTask)
+router.patch('/:id/priority', authentication, editPriorityTask)
 
 router.delete('/:id', deleteTask)
 
