@@ -15,7 +15,6 @@ export default async function loggedUser(
       res.status(200).json({
         user: null
       })
-      // return next(new ClientError("Token não encontrado"));
     }
 
     const session = await sessionModel.getUserByToken(token);

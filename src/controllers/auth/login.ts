@@ -41,7 +41,7 @@ export default async function login(
     const token = jwt.sign(
       { publicId: user.publicId, username: user.username },
       env.SECRET_KEY,
-      { expiresIn: "1min" }
+      { expiresIn: "10min" }
     );
 
     const isExistsSession = await sessionModel.getByUserId(user.id)
@@ -56,7 +56,7 @@ export default async function login(
       httpOnly: true,
       secure: false,
       sameSite: "lax",
-      maxAge: 5 * 60 * 1000,
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({

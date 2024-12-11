@@ -24,14 +24,6 @@ export default async function createUser(
       return next(userValidated.error);
     }
 
-    const usernameExists = await userModel.usernameExists(
-      userValidated.data.username
-    );
-
-    if (usernameExists) {
-      return next(new ClientError("Nome de usuário já existe!"));
-    }
-
     const emailExists = await userModel.emailExists(userValidated.data.email);
 
     if (emailExists) {
@@ -53,7 +45,7 @@ export default async function createUser(
     const token = jwt.sign(
       { publicId: createdUser.publicId, username: createdUser.username },
       env.SECRET_KEY,
-      { expiresIn: "1min" }
+      { expiresIn: "10min" }
     );
 
     await sessionModel.create(createdUser.id, token);
@@ -62,7 +54,7 @@ export default async function createUser(
       httpOnly: true,
       secure: false,
       sameSite: "lax",
-      maxAge: 5 * 60 * 1000,
+      maxAge: 24 * 60 * 60 * 1000,
     });
     
     res.status(200).json({

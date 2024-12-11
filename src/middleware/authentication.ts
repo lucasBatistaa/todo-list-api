@@ -29,7 +29,7 @@ export default async function authentication(
               username: session.user.username,
             },
             env.SECRET_KEY,
-            { expiresIn: "1min" }
+            { expiresIn: "10min" }
           );
 
           const sessionWithNewToken = await sessionModel.updateToken(
@@ -45,17 +45,17 @@ export default async function authentication(
             httpOnly: true,
             secure: false,
             sameSite: "lax",
-            maxAge: 5 * 60 * 1000,
+            maxAge: 24 * 60 * 60 * 1000,
           });
 
           req.cookies.authToken = newToken;
-          return next(); // Encerra o fluxo aqui
+          return next();
         }
 
-        return res.status(200).json({ user: null }); // Caso sessão não seja encontrada
+        return res.status(200).json({ user: null }); 
       }
 
-      return res.status(200).json({ user: null }); // Outros erros do JWT
+      return res.status(200).json({ user: null }); 
     }
 
     const session = await sessionModel.getByToken(token);
@@ -66,7 +66,6 @@ export default async function authentication(
 
     next();
   } catch (error) {
-    console.log(error)
     next(error);
   }
 }
