@@ -10,10 +10,10 @@ export default async function deleteLabel(req: Request, res: Response, next: Nex
             return next(new ClientError('ID da etiqueta não informado!'))
         }
 
-        const deletedLabel = await labelModel.delete(Number(id))
-
         await labelModel.deleteAllRelations(Number(id))
 
+        const deletedLabel = await labelModel.delete(Number(id))
+        
         if (!deletedLabel) {
             return next(new ClientError('Não foi possível excluir a etiqueta!'))
         }

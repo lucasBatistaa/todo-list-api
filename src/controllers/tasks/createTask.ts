@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { createTaskValidate } from "../../utils/schemas/taskSchema";
+import { CreateTaskType, createTaskValidate } from "../../utils/schemas/taskSchema";
 import { taskModel } from "../../models/taskModel";
 import { ClientError } from "../../errors/clientError";
 
@@ -7,12 +7,12 @@ export default async function createTask(req: Request, res: Response, next: Next
     try {
         const {listId, name, dateToComplete, priority} = req.body
 
-        const task = {
+        const task: CreateTaskType = {
             listId: Number(listId),
             name: String(name),
-            dateToComplete: dateToComplete ? new Date(dateToComplete) : null,
-            priority: priority ? Number(priority) : null
-        }
+            dateToComplete: dateToComplete?  new Date(dateToComplete) : null,
+            priority: priority !== null ? Number(priority) : null,
+          };
 
         const validatedTask = createTaskValidate(task)
 

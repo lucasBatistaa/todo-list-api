@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ClientError } from "../errors/clientError";
 import { sessionModel } from "../models/sessionModel";
-
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { env } from "../utils/schemas/envSchema";
 
@@ -11,34 +10,23 @@ export default async function authentication(
   next: NextFunction
 ) {
   try {
-    const token = req.cookies.authToken
+    const token = req.cookies.authToken;
 
     if (!token) {
-      return res.status(200).json({
-        user: null
-      })
-      // return next(new ClientError("Token não identificado!"));
+      return res.status(200).json({ user: null });
     }
 
     try {
       jwt.verify(token, env.SECRET_KEY);
-
-      
     } catch (error) {
       if (error instanceof TokenExpiredError) {
-        const token = req.cookies.authToken
-
-        if (!token) {
-          return next(new ClientError("Token não identificado!"));
-        }
-
         const session = await sessionModel.getUserByToken(token);
 
         if (session) {
           const newToken = jwt.sign(
             {
-              publicId: session?.user.publicId,
-              username: session?.user.username,
+              publicId: session.user.publicId,
+              username: session.user.username,
             },
             env.SECRET_KEY,
             { expiresIn: "1min" }
@@ -60,29 +48,25 @@ export default async function authentication(
             maxAge: 5 * 60 * 1000,
           });
 
-          req.cookies.authToken = newToken
-          next()
-
+          req.cookies.authToken = newToken;
+          return next(); // Encerra o fluxo aqui
         }
-      } else {
-        // return next(new ClientError("Sessão não encontrada!"));
 
-        return res.status(200).json({
-          user: null
-        })
+        return res.status(200).json({ user: null }); // Caso sessão não seja encontrada
       }
+
+      return res.status(200).json({ user: null }); // Outros erros do JWT
     }
 
     const session = await sessionModel.getByToken(token);
 
     if (!session) {
-      return res.status(200).json({
-        user: null
-      });
+      return res.status(200).json({ user: null });
     }
 
-    next()
+    next();
   } catch (error) {
-    next(error)
+    console.log(error)
+    next(error);
   }
 }

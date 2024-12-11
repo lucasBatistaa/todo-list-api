@@ -58,6 +58,13 @@ export default async function createUser(
 
     await sessionModel.create(createdUser.id, token);
 
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 5 * 60 * 1000,
+    });
+    
     res.status(200).json({
       message: "Usuário criado!",
       user: {

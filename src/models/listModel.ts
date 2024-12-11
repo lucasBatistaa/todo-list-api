@@ -153,6 +153,18 @@ export const listModel = {
     },
 
     delete: async (id: number) => {
+        await prisma.task.deleteMany({
+            where: {
+                listId: id
+            }
+        })
+
+        await prisma.labelOnList.deleteMany({
+            where: {
+                listId: id
+            }
+        })
+
         const list = await prisma.list.delete({
             where: {
                 id

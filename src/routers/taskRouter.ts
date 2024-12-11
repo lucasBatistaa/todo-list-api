@@ -21,6 +21,6 @@ router.patch('/:id/date', authentication, editDateTask)
 router.patch('/:id/isChecked', authentication, editIsCheckedTask)
 router.patch('/:id/priority', authentication, editPriorityTask)
 
-router.delete('/:id', deleteTask)
+router.delete('/:id', authentication, deleteTask)
 
 export default router

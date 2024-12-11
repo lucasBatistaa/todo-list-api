@@ -58,8 +58,8 @@ model LabelOnList {
   labelId   Int
   createdAt DateTime @default(now())
 
-  list  List  @relation(fields: [listId], references: [id])
-  label Label @relation(fields: [labelId], references: [id])
+  list  List  @relation(fields: [listId], references: [id], onDelete: Cascade)
+  label Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
 
   @@map("label_on_list")
 }
@@ -73,7 +73,7 @@ model Task {
   dateToComplete DateTime?
   createdAt      DateTime  @default(now())
 
-  list List @relation(fields: [listId], references: [id])
+  list List @relation(fields: [listId], references: [id], onDelete: Cascade)
 
   @@map("tasks")
 }
